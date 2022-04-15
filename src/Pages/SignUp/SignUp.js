@@ -1,12 +1,31 @@
 import React from "react";
-import { FcGoogle } from "react-icons/fc";
-import { SiFacebook } from "react-icons/si";
-import { AiFillGithub } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import {
+  useAuthState,
+  useCreateUserWithEmailAndPassword,
+  useUpdateProfile,
+} from "react-firebase-hooks/auth";
+import auth from "../../firebase.init";
+import toast, { Toaster } from "react-hot-toast";
+import Social from "../Shared/Socilal/Social";
 
 const SignUp = () => {
-  const handelSignUp = (e) => {
+  /* email and password state */
+  const [createUserWithEmailAndPassword, newUser, loading, error] =
+    useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
+  /* user update Email */
+  const [updateProfile] = useUpdateProfile(auth);
+  /*  google sign in state */
+  const [user] = useAuthState(auth);
+
+  const handelSignUp = async (e) => {
     e.preventDefault();
+    const name = e.target.userName.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    await createUserWithEmailAndPassword(email, password);
+    await updateProfile({ displayName: name });
+    await toast.success("Successfully created!");
   };
   return (
     <div>
@@ -17,7 +36,18 @@ const SignUp = () => {
         >
           <h1 className="text-2xl font-bold text-purple-500">Sign Up</h1>
           <label className="text-gray-700 font-bold py-2" htmlFor="email">
-            Your Email
+            User Name
+          </label>
+          <input
+            className="text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline py-1 px-3 mb-3"
+            type="text"
+            name="userName"
+            id="3"
+            required
+            placeholder="your name"
+          />
+          <label className="text-gray-700 font-bold py-2" htmlFor="email">
+            Your Email*
           </label>
           <input
             className="text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline py-1 px-3 mb-3"
@@ -27,8 +57,9 @@ const SignUp = () => {
             required
             placeholder="your email"
           />
+
           <label className="text-gray-700 font-bold py-2" htmlFor="password">
-            Password
+            Password*
           </label>
           <input
             className="text-gray-700 shadow border rounded border-gray-300 mb-3 py-1 px-3 focus:outline-none focus:shadow-outline"
@@ -62,11 +93,8 @@ const SignUp = () => {
               style={{ height: "1px", width: "100%" }}
             ></div>
           </div>
-          <div className="flex text-3xl justify-center my-5">
-            <FcGoogle className="mx-4 cursor-pointer"></FcGoogle>
-            <SiFacebook className="text-blue-700 cursor-pointer"></SiFacebook>
-            <AiFillGithub className="mx-4 cursor-pointer"></AiFillGithub>
-          </div>
+          <Social></Social>
+          <Toaster />
         </form>
       </div>
     </div>

@@ -1,8 +1,12 @@
+import { signOut } from "firebase/auth";
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import auth from "../../../firebase.init";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [user] = useAuthState(auth);
   return (
     <header className="p-4 dark:bg-slate-900 dark:text-white">
       <div className="container flex justify-between h-16 mx-auto">
@@ -74,12 +78,21 @@ const Header = () => {
           </ul>
         </div>
         <div className="items-center flex-shrink-0 hidden lg:flex">
-          <button
-            onClick={() => navigate("/login")}
-            className="px-8 py-3 font-semibold rounded dark:bg-violet-400 dark:text-coolGray-900"
-          >
-            Log in
-          </button>
+          {user ? (
+            <button
+              onClick={() => signOut(auth)}
+              className="px-8 py-3 font-semibold rounded dark:bg-violet-400 dark:text-coolGray-900"
+            >
+              Sign Out
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate("/login")}
+              className="px-8 py-3 font-semibold rounded dark:bg-violet-400 dark:text-coolGray-900"
+            >
+              Log in
+            </button>
+          )}
         </div>
         <button className="p-4 lg:hidden">
           <svg

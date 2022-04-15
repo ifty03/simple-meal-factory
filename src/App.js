@@ -10,16 +10,21 @@ import NotFound from "./Pages/NotFound/NotFound";
 import Login from "./Pages/Login/Login";
 import SignUp from "./Pages/SignUp/SignUp";
 import Footer from "./Pages/Shared/Footer/Footer";
+import ProductsDetails from "./Pages/ProductDetails/ProductsDetails";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-gray-200">
       <Header></Header>
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>
         <Route path="/home" element={<Home></Home>}></Route>
         <Route path="/about" element={<About></About>}></Route>
         <Route path="/products" element={<Products></Products>}></Route>
+        <Route
+          path="/product/:productId"
+          element={<ProductsDetails></ProductsDetails>}
+        ></Route>
         <Route path="/reviews" element={<Reviews></Reviews>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/signUp" element={<SignUp></SignUp>}></Route>

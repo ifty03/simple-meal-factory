@@ -1,8 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Product = ({ product }) => {
-  console.log(product);
   const { strInstructions, strMeal, strMealThumb, idMeal } = product;
+  const navigate = useNavigate();
   return (
     <div>
       <div className="max-w-xs rounded-md shadow-md dark:bg-coolGray-900 dark:text-coolGray-100">
@@ -19,6 +20,9 @@ const Product = ({ product }) => {
             </p>
           </div>
           <button
+            onClick={() => {
+              navigate("/product/" + idMeal);
+            }}
             type="button"
             className="flex items-center justify-center w-full p-3 font-semibold tracking-wide rounded-md dark:bg-violet-400 dark:text-coolGray-900"
           >

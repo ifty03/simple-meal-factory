@@ -1,15 +1,36 @@
-import React from "react";
-import { FcGoogle } from "react-icons/fc";
-import { SiFacebook } from "react-icons/si";
-import { AiFillGithub } from "react-icons/ai";
+import React, { useState } from "react";
+
 import { Link } from "react-router-dom";
+import {
+  useSendPasswordResetEmail,
+  useSignInWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
+import toast, { Toaster } from "react-hot-toast";
+import auth from "../../firebase.init";
+import Social from "../Shared/Socilal/Social";
 
 const Login = () => {
-  const handelLogin = (e) => {
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
+  const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
+  const [email, setEmail] = useState("");
+  const handelLogin = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log(password, email);
+    await signInWithEmailAndPassword(email, password);
+    toast.success("Successfully Login!");
+  };
+  const handelEmailValue = (e) => {
+    setEmail(e.target.value);
+  };
+  const resetPassword = async () => {
+    if (email) {
+      await sendPasswordResetEmail(email);
+      toast.success("reset email send. Check your Email!");
+    } else {
+      toast.error("Input your Email !");
+    }
   };
   return (
     <div>
@@ -23,6 +44,7 @@ const Login = () => {
             Your Email
           </label>
           <input
+            onBlur={handelEmailValue}
             className="text-gray-700 shadow border rounded border-gray-300 focus:outline-none focus:shadow-outline py-1 px-3 mb-3"
             type="email"
             name="email"
@@ -44,7 +66,10 @@ const Login = () => {
             <button className="bg-purple-500 hover:bg-purple-700 text-white font-bold rounded py-2 px-4">
               Sign In
             </button>
-            <p className="cursor-pointer text-purple-500 hover:text-purple-800 font-bold">
+            <p
+              onClick={resetPassword}
+              className="cursor-pointer text-purple-500 hover:text-purple-800 font-bold"
+            >
               Forgot Password?
             </p>
           </div>
@@ -62,11 +87,8 @@ const Login = () => {
               style={{ height: "1px", width: "100%" }}
             ></div>
           </div>
-          <div className="flex text-3xl justify-center my-5">
-            <FcGoogle className="mx-4 cursor-pointer"></FcGoogle>
-            <SiFacebook className="text-blue-700 cursor-pointer"></SiFacebook>
-            <AiFillGithub className="mx-4 cursor-pointer"></AiFillGithub>
-          </div>
+          <Social></Social>
+          <Toaster />
         </form>
       </div>
     </div>
