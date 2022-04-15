@@ -11,6 +11,7 @@ import Login from "./Pages/Login/Login";
 import SignUp from "./Pages/SignUp/SignUp";
 import Footer from "./Pages/Shared/Footer/Footer";
 import ProductsDetails from "./Pages/ProductDetails/ProductsDetails";
+import RequireAuth from "./Pages/RequireAuth/RequireAuth";
 
 function App() {
   return (
@@ -23,7 +24,11 @@ function App() {
         <Route path="/products" element={<Products></Products>}></Route>
         <Route
           path="/product/:productId"
-          element={<ProductsDetails></ProductsDetails>}
+          element={
+            <RequireAuth>
+              <ProductsDetails></ProductsDetails>
+            </RequireAuth>
+          }
         ></Route>
         <Route path="/reviews" element={<Reviews></Reviews>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>

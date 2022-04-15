@@ -39,8 +39,8 @@ const Baner = () => {
               alt="Motorbike Smoke"
             />
             <div className="carousel-caption hidden md:block absolute text-center">
-              <h5 className="text-3xl text-white">First slide label</h5>
-              <p className="text-white text-2xl">
+              <h5 className="text-4xl text-white">First slide label</h5>
+              <p className="text-white text-3xl">
                 Some representative placeholder content for the first slide.
               </p>
             </div>

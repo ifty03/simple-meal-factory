@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   useSendPasswordResetEmail,
   useSignInWithEmailAndPassword,
@@ -14,12 +14,22 @@ const Login = () => {
     useSignInWithEmailAndPassword(auth);
   const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
   const [email, setEmail] = useState("");
+  /* requireAuth */
+  let navigate = useNavigate();
+  let location = useLocation();
+  let from = location.state?.from?.pathname || "/home";
   const handelLogin = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
     await signInWithEmailAndPassword(email, password);
-    toast.success("Successfully Login!");
+    /* clear input feild */
+    if (user) {
+      e.target.password.value = "";
+      e.target.email.value = "";
+      navigate(from, { replace: true });
+      toast.success("Successfully Login!");
+    }
   };
   const handelEmailValue = (e) => {
     setEmail(e.target.value);
@@ -32,6 +42,7 @@ const Login = () => {
       toast.error("Input your Email !");
     }
   };
+
   return (
     <div>
       <div className="h-screen bg-gray-200 flex justify-center items-center">
@@ -62,6 +73,7 @@ const Login = () => {
             id="2"
             placeholder="your password"
           />
+          <small className="text-red-700">{error?.message}</small>
           <div className="flex justify-between items-center my-4">
             <button className="bg-purple-500 hover:bg-purple-700 text-white font-bold rounded py-2 px-4">
               Sign In

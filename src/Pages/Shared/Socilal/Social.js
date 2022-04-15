@@ -9,15 +9,18 @@ import {
 } from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
 import toast, { Toaster } from "react-hot-toast";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Social = () => {
   const [signInWithGoogle, googleUser, googleLoading] =
     useSignInWithGoogle(auth);
   const [signInWithGithub] = useSignInWithGithub(auth);
   const [signInWithFacebook] = useSignInWithFacebook(auth);
-  //   if (googleLoading) {
-  //     return toast.loading("Loading...");
-  //   }
+
+  /* requireAuth */
+  let navigate = useNavigate();
+  let location = useLocation();
+  let from = location.state?.from?.pathname || "/home";
 
   return (
     <div>
@@ -26,6 +29,7 @@ const Social = () => {
           onClick={async () => {
             await signInWithGoogle();
             toast.success("user created !");
+            navigate(from, { replace: true });
           }}
           className="mx-4 cursor-pointer"
         ></FcGoogle>
@@ -33,6 +37,7 @@ const Social = () => {
           onClick={async () => {
             await signInWithFacebook();
             toast.success("user created !");
+            navigate(from, { replace: true });
           }}
           className="text-blue-700 cursor-pointer"
         ></SiFacebook>
@@ -40,6 +45,7 @@ const Social = () => {
           onClick={async () => {
             await signInWithGithub();
             toast.success("user created !");
+            navigate(from, { replace: true });
           }}
           className="mx-4 cursor-pointer"
         ></AiFillGithub>

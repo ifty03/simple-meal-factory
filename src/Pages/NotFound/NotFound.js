@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const NotFound = () => {
   return (
@@ -33,13 +34,12 @@ const NotFound = () => {
           <p className="text-3xl">
             Looks like our services are currently offline
           </p>
-          <a
-            rel="noopener noreferrer"
-            href="#"
+          <Link
+            to="/home"
             className="px-8 py-3 font-semibold rounded dark:bg-violet-400 dark:text-coolGray-900"
           >
             Back to homepage
-          </a>
+          </Link>
         </div>
       </section>
     </div>

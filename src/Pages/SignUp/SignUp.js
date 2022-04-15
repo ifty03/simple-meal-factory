@@ -23,9 +23,18 @@ const SignUp = () => {
     const name = e.target.userName.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
-    await createUserWithEmailAndPassword(email, password);
-    await updateProfile({ displayName: name });
-    await toast.success("Successfully created!");
+    const agree = e.target.checkbox.checked;
+    if (agree) {
+      await createUserWithEmailAndPassword(email, password);
+      await updateProfile({ displayName: name });
+      toast.success("Successfully created!");
+    } else {
+      toast.error("please accept trams $ conditions !");
+    }
+    /* clear input feild */
+    e.target.password.value = "";
+    e.target.email.value = "";
+    e.target.userName.value = "";
   };
   return (
     <div>
@@ -43,7 +52,6 @@ const SignUp = () => {
             type="text"
             name="userName"
             id="3"
-            required
             placeholder="your name"
           />
           <label className="text-gray-700 font-bold py-2" htmlFor="email">
@@ -68,6 +76,17 @@ const SignUp = () => {
             id="2"
             placeholder="your password"
           />
+          <div className="flex items-center">
+            <input
+              className="mr-2"
+              type="checkbox"
+              name="checkbox"
+              id="check"
+            />
+            <small>
+              <label htmlFor="checkbox">Accept trams and Conditions</label>
+            </small>
+          </div>
           <div className="flex justify-between items-center my-4">
             <button className="bg-purple-500 hover:bg-purple-700 text-white font-bold rounded py-2 px-4">
               Sign Up
